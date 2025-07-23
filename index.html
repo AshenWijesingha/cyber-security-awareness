@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eguardian Lanka - Cyber Security Awareness</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-purple: #6a4c93;
+            --neon-green: #00d4aa;
+            --neon-red: #e63946;
+            --neon-white: #f8f9fa;
+            --cyber-black: #0d1b2a;
+            --dark-bg: #1b263b;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, var(--cyber-black) 0%, var(--dark-bg) 100%);
+            color: var(--neon-white);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(106, 76, 147, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(106, 76, 147, 0.15) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 98% { transform: translate(0); }
+            1% { transform: translate(-2px, 2px); }
+            2% { transform: translate(2px, -2px); }
+            3% { transform: translate(-2px, 2px); }
+        }
+
+        /* Neon Glow Effects - Reduced intensity */
+        .neon-text {
+            text-shadow: 
+                0 0 3px currentColor,
+                0 0 6px currentColor;
+        }
+
+        .neon-border {
+            border: 2px solid var(--neon-purple);
+            box-shadow: 
+                0 0 5px rgba(106, 76, 147, 0.4),
+                inset 0 0 5px rgba(106, 76, 147, 0.1);
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 1rem;
+            text-align: center;
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid var(--neon-purple);
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .company-name {
+            font-size: 2.5rem;
+            color: var(--neon-purple);
+            margin-bottom: 0.5rem;
+        }
+
+        .division-name {
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+        }
+
+        .topics {
+            font-size: 1.1rem;
+            color: var(--neon-white);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Download Section */
+        .download-section {
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--neon-green);
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .download-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .download-btn {
+            display: block;
+            padding: 1.5rem 2rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: var(--neon-white);
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-red));
+            border: none;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(106, 76, 147, 0.3);
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 4rem 1rem;
+            background: rgba(26, 26, 26, 0.5);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .team-member {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-green));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .team-member:hover::before {
+            opacity: 0.1;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+
+        .member-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border: 3px solid var(--neon-white);
+        }
+
+        .member-name {
+            font-size: 1.5rem;
+            color: var(--neon-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .member-designation {
+            font-size: 1.1rem;
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+        }
+
+        .member-contact {
+            font-size: 0.9rem;
+            color: var(--neon-purple);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--cyber-black);
+            padding: 2rem 1rem;
+            text-align: center;
+            border-top: 2px solid var(--neon-purple);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            font-size: 1rem;
+            color: var(--neon-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .developer-credit {
+            font-size: 0.9rem;
+            color: var(--neon-green);
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .download-buttons {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .company-name {
+                font-size: 3rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="cyber-bg">
+        <div class="grid-pattern"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="logo neon-text">EG</div>
+        <h1 class="company-name neon-text glitch">EGUARDIAN LANKA</h1>
+        <h2 class="division-name neon-text">Endpoint and Cloud Security Division</h2>
+        <div class="topics">
+            <strong>Cyber Security Awareness Session</strong><br>
+            Protecting Your Digital Assets | Threat Detection & Prevention | Best Security Practices | Incident Response | Cloud Security Fundamentals
+        </div>
+    </header>
+
+    <!-- Download Section -->
+    <section class="download-section">
+        <h2 class="section-title neon-text">SECURITY RESOURCES</h2>
+        <div class="download-buttons">
+            <a href="#" class="download-btn neon-border" onclick="downloadDocument('network')">
+                📡 NETWORK CONNECTIVITY DETAILS
+            </a>
+            <a href="#" class="download-btn neon-border" onclick="downloadDocument('resources')">
+                📚 SECURITY RESOURCES PDF
+            </a>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <h2 class="section-title neon-text">OUR SECURITY EXPERTS</h2>
+        <div class="team-grid">
+          
+            <div class="team-member neon-border">
+                <div class="member-image">👨‍💻</div>
+                <h3 class="member-name neon-text">Jayandra Wickramasinghe</h3>
+                <p class="member-designation">Lead Cyber Security</p>
+                <p class="member-contact">
+                    📧 <a href="mailto:jayandra.wickramasinghe@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">jayandra.wickramasinghe@eguardian.com</a><br>
+                    📱 <a href="tel:+94761656375" style="text-decoration: none; color: var(--neon-purple);">+94 76 165 6375</a>
+                </p>
+            </div>
+          
+            <div class="team-member neon-border">
+                <div class="member-image">👩‍💻</div>
+                <h3 class="member-name neon-text">Suranga Gunatilake</h3>
+                <p class="member-designation">Associate Lead Cyber Security</p>
+                <p class="member-contact">
+                    📧 <a href="mailto:suranga.gunatilake@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">suranga.gunatilake@eguardian.com</a><br>
+                    📱 <a href="tel:+94773424963" style="text-decoration: none; color: var(--neon-purple);">+94 77 342 4963</a>
+                </p>
+            </div>
+          
+            <div class="team-member neon-border">
+                <div class="member-image">👨‍💼</div>
+                <h3 class="member-name neon-text">Aman Shaluka</h3>
+                <p class="member-designation">Cyber Security Analyst</p>
+                <p class="member-contact">
+                    📧 <a href="mailto:aman.shaluka@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">aman.shaluka@eguardian.com</a><br>
+                    📱 <a href="tel:+94768037971" style="text-decoration: none; color: var(--neon-purple);">+94 76 803 7971</a>
+                </p>
+            </div>
+
+            <div class="team-member neon-border">
+                  <div class="member-image">👨‍💼</div>
+                  <h3 class="member-name neon-text">Livindu Peiris</h3>
+                  <p class="member-designation">Cyber Security Analyst</p>
+                  <p class="member-contact">
+                      📧 <a href="mailto:livindu.peiris@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">livindu.peiris@eguardian.com</a><br>
+                      📱 <a href="tel:+94771915671" style="text-decoration: none; color: var(--neon-purple);">+94 77 191 5671</a>
+                  </p>
+              </div>
+
+              <div class="team-member neon-border">
+                  <div class="member-image">👨‍💼</div>
+                  <h3 class="member-name neon-text">Buddhima Abeypala</h3>
+                  <p class="member-designation">Cyber Security Analyst</p>
+                  <p class="member-contact">
+                      📧 <a href="mailto:buddhima.abeypala@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">buddhima.abeypala@eguardian.com</a><br>
+                      📱 <a href="tel:+94774316100" style="text-decoration: none; color: var(--neon-purple);">+94 77 431 6100</a>
+                  </p>
+              </div>
+
+              <div class="team-member neon-border">
+                  <div class="member-image">👨‍💼</div>
+                  <h3 class="member-name neon-text">Ashen Wijesingha</h3>
+                  <p class="member-designation">Cyber Security Analyst</p>
+                  <p class="member-contact">
+                      📧 <a href="mailto:ashen.wijesingha@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">ashen.wijesingha@eguardian.com</a><br>
+                      📱 <a href="tel:+94766024625" style="text-decoration: none; color: var(--neon-purple);">+94 76 602 4625</a>
+                  </p>
+              </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="copyright neon-text">
+                &copy; 2025 Eguardian Lanka (Pvt) Ltd. All rights reserved.
+            </p>
+            <p class="developer-credit">
+                Developed with ⚡ by 45h3n | Endpoint and Cloud Security Division
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 20000);
+        }
+
+        // Generate particles
+        setInterval(createParticle, 2000);
+
+        // Download function (you'll need to replace these with actual file URLs)
+        function downloadDocument(type) {
+            if (type === 'network') {
+                // Replace with actual network connectivity details PDF URL
+                alert('Network Connectivity Details download will start...\nPlease replace with actual file URL in the onclick handler.');
+                // window.open('path/to/network-connectivity-details.pdf', '_blank');
+            } else if (type === 'resources') {
+                // Replace with actual security resources PDF URL
+                alert('Security Resources PDF download will start...\nPlease replace with actual file URL in the onclick handler.');
+                // window.open('path/to/security-resources.pdf', '_blank');
+            }
+        }
+
+        // Add interactive hover effects for team members
+        document.querySelectorAll('.team-member').forEach(member => {
+            member.addEventListener('mouseenter', function() {
+                this.style.borderColor = '#39ff14';
+                this.style.boxShadow = '0 0 20px rgba(57, 255, 20, 0.3)';
+            });
+            
+            member.addEventListener('mouseleave', function() {
+                this.style.borderColor = '#9d4edd';
+                this.style.boxShadow = '0 0 10px rgba(157, 78, 221, 0.2)';
+            });
+        });
+
+        // Add typing effect to company name
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize typing effect on load
+        window.addEventListener('load', function() {
+            const companyName = document.querySelector('.company-name');
+            typeWriter(companyName, 'EGUARDIAN LANKA', 150);
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe team members for animation
+        document.querySelectorAll('.team-member').forEach(member => {
+            member.style.opacity = '0';
+            member.style.transform = 'translateY(50px)';
+            member.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(member);
+        });
+    </script>
+</body>
+</html>
