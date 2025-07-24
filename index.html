@@ -22,12 +22,24 @@
             --dark-bg: #1b263b;
         }
 
+        html, body {
+            height: 100%;
+        }
+
         body {
             font-family: 'Courier New', monospace;
             background: linear-gradient(135deg, var(--cyber-black) 0%, var(--dark-bg) 100%);
             color: var(--neon-white);
             overflow-x: hidden;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Main content wrapper */
+        .main-content {
+            flex: 1;
         }
 
         /* Animated Background */
@@ -35,8 +47,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: -1;
             opacity: 0.1;
         }
@@ -172,6 +184,8 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
+            width: 100%;
+            flex: 1;
         }
 
         .download-btn::before {
@@ -269,13 +283,13 @@
             color: var(--neon-purple);
         }
 
-        /* Footer */
+        /* Footer - Fixed to bottom */
         .footer {
-            position: fixed;
             background: var(--cyber-black);
             padding: 2rem 1rem;
             text-align: center;
             border-top: 2px solid var(--neon-purple);
+            margin-top: auto;
         }
 
         .footer-content {
@@ -294,13 +308,15 @@
             color: var(--neon-green);
         }
 
-        /* Floating Particles */
+        /* Floating Particles - Full page coverage */
         .particle {
-            position: absolute;
+            position: fixed;
             width: 4px;
             height: 4px;
             background: var(--neon-green);
             border-radius: 50%;
+            pointer-events: none;
+            z-index: 10;
             animation: float 15s infinite linear;
         }
 
@@ -353,96 +369,98 @@
         <div class="grid-pattern"></div>
     </div>
 
-    <!-- Header Section -->
-    <header class="header">
-        <div class="logo neon-text">EGUARDIAN</div>
-        <h1 class="company-name neon-text glitch">EGUARDIAN LANKA</h1>
-        <h2 class="division-name neon-text">Endpoint and Cloud Security Division</h2>
-        <div class="topics">
-            <strong>Cyber Security Awareness Session</strong><br>
-            Protecting Your Digital Assets | Threat Detection & Prevention | Best Security Practices | Incident Response | Cloud Security Fundamentals
-        </div>
-    </header>
-
-    <!-- Download Section -->
-    <section class="download-section">
-        <h2 class="section-title neon-text">SECURITY RESOURCES</h2>
-        <div class="download-buttons">
-            <a href="#" class="download-btn neon-border" onclick="downloadDocument('network')">
-                📡 NETWORK CONNECTIVITY DETAILS
-            </a>
-            <a href="#" class="download-btn neon-border" onclick="downloadDocument('resources')">
-                📚 SECURITY RESOURCES PDF
-            </a>
-        </div>
-    </section>
-
-    <!-- Team Section -->
-    <section class="team-section">
-        <h2 class="section-title neon-text">OUR SECURITY EXPERTS</h2>
-        <div class="team-grid">
-          
-            <div class="team-member neon-border">
-                <div class="member-image">👨‍💻</div>
-                <h3 class="member-name neon-text">Jayandra Wickramasinghe</h3>
-                <p class="member-designation">Consultant - Cyber Security</p>
-                <p class="member-contact">
-                    📧 <a href="mailto:jayandra.wickramasinghe@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">jayandra.wickramasinghe@eguardian.com</a><br>
-                    📱 <a href="tel:+94761656375" style="text-decoration: none; color: var(--neon-purple);">+94 76 165 6375</a>
-                </p>
+    <div class="main-content">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo neon-text">EGUARDIAN</div>
+            <h1 class="company-name neon-text glitch">EGUARDIAN LANKA</h1>
+            <h2 class="division-name neon-text">Endpoint and Cloud Security Division</h2>
+            <div class="topics">
+                <strong>Cyber Security Awareness Session</strong><br>
+                Protecting Your Digital Assets | Threat Detection & Prevention | Best Security Practices | Incident Response | Cloud Security Fundamentals
             </div>
-          
-            <div class="team-member neon-border">
-                <div class="member-image">👨‍💻</div>
-                <h3 class="member-name neon-text">Suranga Gunatilake</h3>
-                <p class="member-designation">Associate Lead - Cyber Security</p>
-                <p class="member-contact">
-                    📧 <a href="mailto:suranga.gunatilake@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">suranga.gunatilake@eguardian.com</a><br>
-                    📱 <a href="tel:+94773424963" style="text-decoration: none; color: var(--neon-purple);">+94 77 342 4963</a>
-                </p>
+        </header>
+
+        <!-- Download Section -->
+        <section class="download-section">
+            <h2 class="section-title neon-text">SECURITY RESOURCES</h2>
+            <div class="download-buttons">
+                <a href="#" class="download-btn neon-border" onclick="downloadDocument('network')">
+                    📡 NETWORK CONNECTIVITY DETAILS
+                </a>
+                <a href="#" class="download-btn neon-border" onclick="downloadDocument('resources')">
+                    📚 SECURITY RESOURCES PDF
+                </a>
             </div>
-          
-            <div class="team-member neon-border">
-                <div class="member-image">👨‍💻</div>
-                <h3 class="member-name neon-text">Aman Shaluka</h3>
-                <p class="member-designation">Cyber Security Analyst</p>
-                <p class="member-contact">
-                    📧 <a href="mailto:aman.shaluka@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">aman.shaluka@eguardian.com</a><br>
-                    📱 <a href="tel:+94768037971" style="text-decoration: none; color: var(--neon-purple);">+94 76 803 7971</a>
-                </p>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2 class="section-title neon-text">OUR SECURITY EXPERTS</h2>
+            <div class="team-grid">
+            
+                <div class="team-member neon-border">
+                    <div class="member-image">👨‍💻</div>
+                    <h3 class="member-name neon-text">Jayandra Wickramasinghe</h3>
+                    <p class="member-designation">Consultant - Cyber Security</p>
+                    <p class="member-contact">
+                        📧 <a href="mailto:jayandra.wickramasinghe@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">jayandra.wickramasinghe@eguardian.com</a><br>
+                        📱 <a href="tel:+94761656375" style="text-decoration: none; color: var(--neon-purple);">+94 76 165 6375</a>
+                    </p>
+                </div>
+            
+                <div class="team-member neon-border">
+                    <div class="member-image">👨‍💻</div>
+                    <h3 class="member-name neon-text">Suranga Gunatilake</h3>
+                    <p class="member-designation">Associate Lead - Cyber Security</p>
+                    <p class="member-contact">
+                        📧 <a href="mailto:suranga.gunatilake@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">suranga.gunatilake@eguardian.com</a><br>
+                        📱 <a href="tel:+94773424963" style="text-decoration: none; color: var(--neon-purple);">+94 77 342 4963</a>
+                    </p>
+                </div>
+            
+                <div class="team-member neon-border">
+                    <div class="member-image">👨‍💻</div>
+                    <h3 class="member-name neon-text">Aman Shaluka</h3>
+                    <p class="member-designation">Cyber Security Analyst</p>
+                    <p class="member-contact">
+                        📧 <a href="mailto:aman.shaluka@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">aman.shaluka@eguardian.com</a><br>
+                        📱 <a href="tel:+94768037971" style="text-decoration: none; color: var(--neon-purple);">+94 76 803 7971</a>
+                    </p>
+                </div>
+
+                <div class="team-member neon-border">
+                    <div class="member-image">👨‍💻</div>
+                    <h3 class="member-name neon-text">Livindu Peiris</h3>
+                    <p class="member-designation">Cyber Security Analyst</p>
+                    <p class="member-contact">
+                        📧 <a href="mailto:livindu.peiris@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">livindu.peiris@eguardian.com</a><br>
+                        📱 <a href="tel:+94771915671" style="text-decoration: none; color: var(--neon-purple);">+94 77 191 5671</a>
+                    </p>
+                </div>
+
+                <div class="team-member neon-border">
+                    <div class="member-image">👩‍💻</div>
+                    <h3 class="member-name neon-text">Buddhima Abeypala</h3>
+                    <p class="member-designation">Cyber Security Analyst</p>
+                    <p class="member-contact">
+                        📧 <a href="mailto:buddhima.abeypala@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">buddhima.abeypala@eguardian.com</a><br>
+                        📱 <a href="tel:+94774316100" style="text-decoration: none; color: var(--neon-purple);">+94 77 431 6100</a>
+                    </p>
+                </div>
+
+                <div class="team-member neon-border">
+                    <div class="member-image">👨‍💻</div>
+                    <h3 class="member-name neon-text">Ashen Wijesingha</h3>
+                    <p class="member-designation">Cyber Security Analyst</p>
+                    <p class="member-contact">
+                        📧 <a href="mailto:ashen.wijesingha@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">ashen.wijesingha@eguardian.com</a><br>
+                        📱 <a href="tel:+94766024625" style="text-decoration: none; color: var(--neon-purple);">+94 76 602 4625</a>
+                    </p>
+                </div>
             </div>
-
-            <div class="team-member neon-border">
-                  <div class="member-image">👨‍💻</div>
-                  <h3 class="member-name neon-text">Livindu Peiris</h3>
-                  <p class="member-designation">Cyber Security Analyst</p>
-                  <p class="member-contact">
-                      📧 <a href="mailto:livindu.peiris@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">livindu.peiris@eguardian.com</a><br>
-                      📱 <a href="tel:+94771915671" style="text-decoration: none; color: var(--neon-purple);">+94 77 191 5671</a>
-                  </p>
-              </div>
-
-              <div class="team-member neon-border">
-                  <div class="member-image">👩‍💻</div>
-                  <h3 class="member-name neon-text">Buddhima Abeypala</h3>
-                  <p class="member-designation">Cyber Security Analyst</p>
-                  <p class="member-contact">
-                      📧 <a href="mailto:buddhima.abeypala@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">buddhima.abeypala@eguardian.com</a><br>
-                      📱 <a href="tel:+94774316100" style="text-decoration: none; color: var(--neon-purple);">+94 77 431 6100</a>
-                  </p>
-              </div>
-
-              <div class="team-member neon-border">
-                  <div class="member-image">👨‍💻</div>
-                  <h3 class="member-name neon-text">Ashen Wijesingha</h3>
-                  <p class="member-designation">Cyber Security Analyst</p>
-                  <p class="member-contact">
-                      📧 <a href="mailto:ashen.wijesingha@eguardian.com" style="text-decoration: none; color: var(--neon-purple);">ashen.wijesingha@eguardian.com</a><br>
-                      📱 <a href="tel:+94766024625" style="text-decoration: none; color: var(--neon-purple);">+94 76 602 4625</a>
-                  </p>
-              </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -457,22 +475,39 @@
     </footer>
 
     <script>
-        // Create floating particles
+        // Create floating particles with full page coverage
         function createParticle() {
             const particle = document.createElement('div');
             particle.className = 'particle';
+            
+            // Random horizontal position across full viewport width
             particle.style.left = Math.random() * window.innerWidth + 'px';
+            
+            // Random animation properties
             particle.style.animationDelay = Math.random() * 2 + 's';
             particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            
+            // Random colors
+            const colors = ['#00d4aa', '#6a4c93', '#e63946', '#f8f9fa'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
             document.body.appendChild(particle);
 
+            // Remove particle after animation completes
             setTimeout(() => {
-                particle.remove();
+                if (particle.parentNode) {
+                    particle.remove();
+                }
             }, 20000);
         }
 
-        // Generate particles
-        setInterval(createParticle, 2000);
+        // Generate particles more frequently for better coverage
+        setInterval(createParticle, 800);
+
+        // Create initial burst of particles
+        for (let i = 0; i < 10; i++) {
+            setTimeout(createParticle, i * 200);
+        }
 
         // Download function (you'll need to replace these with actual file URLs)
         function downloadDocument(type) {
@@ -541,6 +576,16 @@
             member.style.transform = 'translateY(50px)';
             member.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(member);
+        });
+
+        // Handle window resize for particles
+        window.addEventListener('resize', function() {
+            // Update particle positions on resize if needed
+            document.querySelectorAll('.particle').forEach(particle => {
+                if (parseInt(particle.style.left) > window.innerWidth) {
+                    particle.style.left = Math.random() * window.innerWidth + 'px';
+                }
+            });
         });
     </script>
 </body>
