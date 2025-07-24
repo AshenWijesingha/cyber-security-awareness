@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eguardian Lanka - Cyber Security Awareness</title>
+    <link rel="icon" type="image/png" href="/templates/default/assets/images/favicon.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --safetica-blue: #0066cc;
+            --safetica-light-blue: #4d9fff;
+            --safetica-dark-blue: #004499;
+            --pure-white: #ffffff;
+            --light-gray: #f8f9fa;
+            --medium-gray: #e9ecef;
+            --dark-gray: #495057;
+            --black: #000000;
+            --shadow-light: rgba(0, 102, 204, 0.1);
+            --shadow-medium: rgba(0, 102, 204, 0.2);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--pure-white) 0%, var(--light-gray) 100%);
+            color: var(--black);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animated Background */
+        .professional-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.05;
+        }
+
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 102, 204, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 102, 204, 0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* Professional Shadow Effects */
+        .shadow-soft {
+            box-shadow: 0 4px 6px -1px var(--shadow-light), 0 2px 4px -1px var(--shadow-light);
+        }
+
+        .shadow-medium {
+            box-shadow: 0 10px 15px -3px var(--shadow-medium), 0 4px 6px -2px var(--shadow-light);
+        }
+
+        .border-safetica {
+            border: 2px solid var(--safetica-blue);
+        }
+
+        /* Header */
+        .header {
+            padding: 3rem 1rem;
+            text-align: center;
+            background: var(--pure-white);
+            border-bottom: 3px solid var(--safetica-blue);
+            box-shadow: 0 2px 4px var(--shadow-light);
+            
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--safetica-blue), var(--safetica-light-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--pure-white);
+            animation: gentlePulse 3s infinite;
+            box-shadow: 0 8px 16px var(--shadow-medium);
+        }
+
+        @keyframes gentlePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        .company-name {
+            font-size: 2.8rem;
+            color: var(--safetica-dark-blue);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px var(--shadow-light);
+        }
+
+        .division-name {
+            font-size: 1.3rem;
+            color: var(--safetica-blue);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .topics {
+            font-size: 1.1rem;
+            color: var(--dark-gray);
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.7;
+            background: var(--light-gray);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--safetica-blue);
+        }
+
+        /* Download Section */
+        .download-section {
+            padding: 4rem 1rem;
+            text-align: center;
+            background: var(--light-gray);
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--safetica-dark-blue);
+            margin-bottom: 3rem;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--safetica-blue);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .download-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .download-btn {
+            display: block;
+            padding: 1.8rem 2.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--pure-white);
+            background: linear-gradient(135deg, var(--safetica-blue), var(--safetica-light-blue));
+            border: none;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px var(--shadow-medium);
+            flex: 1;
+            min-width: 0;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px var(--shadow-medium);
+            background: linear-gradient(135deg, var(--safetica-dark-blue), var(--safetica-blue));
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 4rem 1rem;
+            background: var(--pure-white);
+            flex: 1;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .team-member {
+            background: var(--pure-white);
+            padding: 2.5rem;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid var(--medium-gray);
+            box-shadow: 0 4px 6px var(--shadow-light);
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--safetica-blue), var(--safetica-light-blue));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .team-member:hover::before {
+            opacity: 0.05;
+        }
+
+        .team-member:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px var(--shadow-medium);
+            border-color: var(--safetica-blue);
+        }
+
+        .member-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--safetica-blue), var(--safetica-light-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            border: 4px solid var(--pure-white);
+            box-shadow: 0 4px 8px var(--shadow-medium);
+        }
+
+        .member-name {
+            font-size: 1.4rem;
+            color: var(--black);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .member-designation {
+            font-size: 1rem;
+            color: var(--safetica-blue);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .member-contact {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            line-height: 1.8;
+        }
+
+        .member-contact a {
+            color: var(--safetica-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .member-contact a:hover {
+            color: var(--safetica-dark-blue);
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--safetica-dark-blue);
+            padding: 2.5rem 1rem;
+            text-align: center;
+            color: var(--pure-white);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .copyright {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .developer-credit {
+            font-size: 0.9rem;
+            color: var(--safetica-light-blue);
+            opacity: 0.8;
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--safetica-blue);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: gentleFloat 25s infinite linear;
+            z-index: 1;
+        }
+
+        @keyframes gentleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            50% {
+                transform: translateY(50vh) translateX(20px) rotate(180deg);
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100px) translateX(-20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .floating-element:nth-child(even) {
+            background: var(--safetica-light-blue);
+            animation-duration: 30s;
+            animation-delay: -10s;
+        }
+
+        .floating-element:nth-child(3n) {
+            width: 6px;
+            height: 6px;
+            animation-duration: 35s;
+            animation-delay: -20s;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .download-buttons {
+                flex-direction: row;
+                justify-content: center;
+            }
+            
+            .company-name {
+                font-size: 3.5rem;
+                color: black;
+            }
+            
+            .section-title {
+                font-size: 2.8rem;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus states for accessibility */
+        .download-btn:focus,
+        .team-member:focus,
+        .member-contact a:focus {
+            outline: 3px solid var(--safetica-light-blue);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="professional-bg">
+        <div class="grid-pattern"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="logo">EG</div>
+    <!--<div class="logo"><img src="https://www.eguardian.com/templates/default/assets/images/favicon.png"></div> -->
+        <h1 class="company-name">EGUARDIAN</h1>
+        <h2 class="division-name">Endpoint and Cloud Security Division</h2>
+        <div class="topics">
+            <strong>Cyber Security Awareness Session</strong><br>
+            Protecting Your Digital Assets | Threat Detection & Prevention | Best Security Practices | Incident Response | Cloud Security Fundamentals
+        </div>
+    </header>
+
+    <!-- Download Section -->
+    <section class="download-section">
+        <h2 class="section-title">SECURITY RESOURCES</h2>
+        <div class="download-buttons">
+            <a href="#" class="download-btn" onclick="downloadDocument('network')">
+                📡 NETWORK CONNECTIVITY DETAILS
+            </a>
+            <a href="#" class="download-btn" onclick="downloadDocument('resources')">
+                📚 SECURITY RESOURCES PDF
+            </a>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <h2 class="section-title">OUR SECURITY EXPERTS</h2>
+        <div class="team-grid">
+          
+            <div class="team-member">
+                <div class="member-image">👨‍💻</div>
+                <h3 class="member-name">Jayandra Wickramasinghe</h3>
+                <p class="member-designation">Consultant - Cyber Security</p>
+                <p class="member-contact">
+                    📧 <a href="mailto:jayandra.wickramasinghe@eguardian.com">jayandra.wickramasinghe@eguardian.com</a><br>
+                    📱 <a href="tel:+94761656375">+94 76 165 6375</a>
+                </p>
+            </div>
+          
+            <div class="team-member">
+                <div class="member-image">👨‍💻</div>
+                <h3 class="member-name">Suranga Gunatilake</h3>
+                <p class="member-designation">Associate Lead - Cyber Security</p>
+                <p class="member-contact">
+                    📧 <a href="mailto:suranga.gunatilake@eguardian.com">suranga.gunatilake@eguardian.com</a><br>
+                    📱 <a href="tel:+94773424963">+94 77 342 4963</a>
+                </p>
+            </div>
+          
+            <div class="team-member">
+                <div class="member-image">👨‍💻</div>
+                <h3 class="member-name">Aman Shaluka</h3>
+                <p class="member-designation">Cyber Security Analyst</p>
+                <p class="member-contact">
+                    📧 <a href="mailto:aman.shaluka@eguardian.com">aman.shaluka@eguardian.com</a><br>
+                    📱 <a href="tel:+94768037971">+94 76 803 7971</a>
+                </p>
+            </div>
+
+            <div class="team-member">
+                  <div class="member-image">👨‍💻</div>
+                  <h3 class="member-name">Livindu Peiris</h3>
+                  <p class="member-designation">Cyber Security Analyst</p>
+                  <p class="member-contact">
+                      📧 <a href="mailto:livindu.peiris@eguardian.com">livindu.peiris@eguardian.com</a><br>
+                      📱 <a href="tel:+94771915671">+94 77 191 5671</a>
+                  </p>
+              </div>
+
+              <div class="team-member">
+                  <div class="member-image">👩‍💻</div>
+                  <h3 class="member-name">Buddhima Abeypala</h3>
+                  <p class="member-designation">Cyber Security Analyst</p>
+                  <p class="member-contact">
+                      📧 <a href="mailto:buddhima.abeypala@eguardian.com">buddhima.abeypala@eguardian.com</a><br>
+                      📱 <a href="tel:+94774316100">+94 77 431 6100</a>
+                  </p>
+              </div>
+
+              <div class="team-member">
+                  <div class="member-image">👨‍💻</div>
+                  <h3 class="member-name">Ashen Wijesingha</h3>
+                  <p class="member-designation">Cyber Security Analyst</p>
+                  <p class="member-contact">
+                      📧 <a href="mailto:ashen.wijesingha@eguardian.com">ashen.wijesingha@eguardian.com</a><br>
+                      📱 <a href="tel:+94766024625">+94 76 602 4625</a>
+                  </p>
+              </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="copyright">
+                &copy; 2025 Eguardian Lanka (Pvt) Ltd. All rights reserved.
+            </p>
+            <p class="developer-credit">
+                Developed with 💙 by 45h3n | Endpoint and Cloud Security Division
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating elements with better distribution
+        function createFloatingElement() {
+            const element = document.createElement('div');
+            element.className = 'floating-element';
+            element.style.left = Math.random() * (window.innerWidth - 20) + 'px';
+            element.style.animationDelay = Math.random() * 5 + 's';
+            element.style.animationDuration = (Math.random() * 15 + 20) + 's';
+            
+            // Add some variation to the floating elements
+            const size = Math.random() * 4 + 4; // 4-8px
+            element.style.width = size + 'px';
+            element.style.height = size + 'px';
+            
+            document.body.appendChild(element);
+
+            setTimeout(() => {
+                if (element.parentNode) {
+                    element.remove();
+                }
+            }, 40000);
+        }
+
+        // Generate floating elements more frequently
+        setInterval(createFloatingElement, 1500);
+        
+        // Create initial batch of floating elements
+        for (let i = 0; i < 8; i++) {
+            setTimeout(createFloatingElement, i * 300);
+        }
+
+        // Download function
+        function downloadDocument(type) {
+            if (type === 'network') {
+                alert('Network Connectivity Details download will start...\nPlease replace with actual file URL in the onclick handler.');
+            } else if (type === 'resources') {
+                alert('Security Resources PDF download will start...\nPlease replace with actual file URL in the onclick handler.');
+            }
+        }
+
+        // Add interactive hover effects for team members
+        document.querySelectorAll('.team-member').forEach(member => {
+            member.addEventListener('mouseenter', function() {
+                this.style.borderColor = '#0066cc';
+                this.style.transform = 'translateY(-8px)';
+            });
+            
+            member.addEventListener('mouseleave', function() {
+                this.style.borderColor = '#e9ecef';
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add typing effect to company name
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize typing effect on load
+        window.addEventListener('load', function() {
+            const companyName = document.querySelector('.company-name');
+            typeWriter(companyName, 'EGUARDIAN', 120);
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe team members for animation
+        document.querySelectorAll('.team-member').forEach(member => {
+            member.style.opacity = '0';
+            member.style.transform = 'translateY(30px)';
+            member.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(member);
+        });
+
+        // Add smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
