@@ -549,7 +549,6 @@
                                 <input type="radio" id="female" name="gender" value="female" required>
                                 <label for="female">Female</label>
                             </div>
-
                         </div>
                         <div class="error-message" id="genderError">Please select your gender</div>
                     </div>
@@ -682,7 +681,7 @@
             }
 
             validateField(field) {
-                const fieldName = field.name;
+                let fieldName = field.name;
                 const value = field.value.trim();
                 let isValid = true;
                 let errorMessage = '';
@@ -732,14 +731,14 @@
                         break;
                 }
 
-                if (fieldName === 'gender' || field.type === 'radio') {
+                // Handle gender validation separately
+                if (field.type === 'radio' && fieldName === 'gender') {
                     const genderSelected = document.querySelector('input[name="gender"]:checked');
                     isValid = genderSelected !== null;
                     errorMessage = 'Please select your gender';
-                    fieldName = 'gender';
                 }
 
-                this.showFieldValidation(fieldName === 'gender' || field.type === 'radio' ? 'gender' : fieldName, isValid, errorMessage);
+                this.showFieldValidation(fieldName, isValid, errorMessage);
                 return isValid;
             }
 
@@ -777,6 +776,7 @@
                 let isValid = true;
                 const formData = new FormData(this.form);
                 
+                // Validate regular fields
                 for (let [key, value] of formData.entries()) {
                     const field = document.getElementById(key) || document.querySelector(`input[name="${key}"]`);
                     if (field && !this.validateField(field)) {
@@ -784,6 +784,7 @@
                     }
                 }
 
+                // Special validation for gender (radio buttons)
                 const genderSelected = document.querySelector('input[name="gender"]:checked');
                 if (!genderSelected) {
                     this.showFieldValidation('gender', false, 'Please select your gender');
@@ -806,20 +807,23 @@
                     const formData = new FormData(this.form);
                     const data = {};
                     
+                    // Convert FormData to regular object
                     for (let [key, value] of formData.entries()) {
                         data[key] = value;
                     }
 
+                    // Add additional metadata
                     data.timestamp = new Date().toISOString();
                     data.formType = 'feedback';
 
-                    // Log all form data to console for testing
+                    // Log form data for debugging
                     console.log('=== FORM DATA BEING SENT ===');
                     console.log('API Endpoint:', this.apiEndpoint);
                     console.log('Form Data Object:', data);
                     console.log('JSON Payload:', JSON.stringify(data, null, 2));
                     console.log('================================');
 
+                    // Primary submission attempt (JSON)
                     const response = await fetch(this.apiEndpoint, {
                         method: 'POST',
                         headers: {
@@ -831,36 +835,37 @@
                     if (response.ok) {
                         this.showSuccess();
                         this.resetForm();
+                        return;
                     } else {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
 
                 } catch (error) {
-                    console.error('Error submitting form:', error);
+                    console.error('Primary submission failed:', error);
                     
+                    // Fallback submission attempt (FormData)
                     try {
-                        const formData = new FormData(this.form);
-                        formData.append('timestamp', new Date().toISOString());
-                        formData.append('formType', 'feedback');
+                        const fallbackFormData = new FormData(this.form);
+                        fallbackFormData.append('timestamp', new Date().toISOString());
+                        fallbackFormData.append('formType', 'feedback');
                         
-                        // Log fallback form data to console
                         console.log('=== FALLBACK FORM DATA ===');
                         console.log('FormData entries:');
-                        for (let [key, value] of formData.entries()) {
+                        for (let [key, value] of fallbackFormData.entries()) {
                             console.log(`${key}: ${value}`);
                         }
                         console.log('==========================');
                         
-                        const response = await fetch(this.apiEndpoint, {
+                        const fallbackResponse = await fetch(this.apiEndpoint, {
                             method: 'POST',
-                            body: formData
+                            body: fallbackFormData
                         });
 
-                        if (response.ok) {
+                        if (fallbackResponse.ok) {
                             this.showSuccess();
                             this.resetForm();
                         } else {
-                            this.showError('Failed to submit feedback. Please try again later.');
+                            throw new Error(`Fallback HTTP error! status: ${fallbackResponse.status}`);
                         }
                     } catch (fallbackError) {
                         console.error('Fallback submission also failed:', fallbackError);
@@ -885,39 +890,10 @@
                 this.successMessage.style.display = 'block';
                 this.successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 
+                // Auto-hide success message after 5 seconds
                 setTimeout(() => {
                     this.successMessage.style.display = 'none';
                 }, 5000);
             }
 
             showError(message) {
-                alert(`Error: ${message}`);
-            }
-
-            resetForm() {
-                this.form.reset();
-                
-                const fields = this.form.querySelectorAll('input, textarea');
-                fields.forEach(field => {
-                    field.classList.remove('valid', 'invalid');
-                });
-                
-                const errorMessages = this.form.querySelectorAll('.error-message');
-                errorMessages.forEach(error => {
-                    error.style.display = 'none';
-                });
-
-                // Reset radio button selections
-                const radioOptions = document.querySelectorAll('.radio-option');
-                radioOptions.forEach(option => {
-                    option.classList.remove('selected');
-                });
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            new FeedbackForm();
-        });
-    </script>
-</body>
-</html>
