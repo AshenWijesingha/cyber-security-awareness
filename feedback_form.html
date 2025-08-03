@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Feedback Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(52, 152, 219, 0.1);
+            overflow: hidden;
+            border: 1px solid rgba(52, 152, 219, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-container {
+            padding: clamp(1.5rem, 4vw, 3rem);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 0.95rem;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #ffffff;
+            color: #2c3e50;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        input[type="tel"]:hover,
+        input[type="date"]:hover,
+        select:hover,
+        textarea:hover {
+            border-color: #bdc3c7;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .gender-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: white;
+            min-width: 80px;
+            justify-content: center;
+        }
+
+        .radio-option:hover {
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        .radio-option.selected {
+            border-color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
+            color: #2980b9;
+        }
+
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #3498db;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            max-width: 250px;
+            margin: 2rem auto 0;
+            display: block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            display: none;
+            font-weight: 500;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 1.25rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            display: none;
+            animation: slideDown 0.5s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        .valid {
+            border-color: #27ae60 !important;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1) !important;
+        }
+
+        .invalid {
+            border-color: #e74c3c !important;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1) !important;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            margin-left: 0.25rem;
+            color: #3498db;
+            font-weight: normal;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 0.75rem;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2c3e50 transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, -20px); }
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                margin: 0;
+                border-radius: 12px;
+            }
+            
+            .header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .form-container {
+                padding: 1.5rem 1rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+            
+            .gender-group {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .radio-option {
+                justify-content: flex-start;
+                min-width: auto;
+            }
+            
+            .submit-btn {
+                width: 100%;
+                max-width: none;
+                padding: 1.125rem 2rem;
+            }
+            
+            .tooltip .tooltiptext {
+                width: 200px;
+                margin-left: -100px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .header p {
+                font-size: 0.95rem;
+            }
+            
+            .form-container {
+                padding: 1rem 0.75rem;
+            }
+            
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            input[type="date"],
+            select,
+            textarea {
+                padding: 0.75rem;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            .tooltip .tooltiptext {
+                width: calc(100vw - 40px);
+                left: 0;
+                margin-left: 0;
+                transform: none;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                border-radius: 8px;
+            }
+            
+            .form-container {
+                padding: 0.75rem 0.5rem;
+            }
+            
+            .header {
+                padding: 1.25rem 0.75rem;
+            }
+        }
+
+        /* Large screens */
+        @media (min-width: 1200px) {
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .container {
+                max-width: 1000px;
+            }
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            input[type="date"],
+            select,
+            textarea {
+                border-width: 1px;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            }
+            
+            .container {
+                background: #ffffff;
+                border-color: rgba(52, 152, 219, 0.2);
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+            
+            .submit-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Customer Feedback Form</h1>
+            <p>We value your opinion and would love to hear from you</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="success-message" id="successMessage">
+                ✅ Thank you for your feedback! We appreciate your time and input.
+            </div>
+            
+            <form id="feedbackForm" novalidate>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Full Name <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" required autocomplete="name">
+                        <div class="error-message" id="nameError">Please enter your full name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required autocomplete="email">
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="nic">National Identity Card Number <span class="required">*</span>
+                            <span class="tooltip">ℹ️
+                                <span class="tooltiptext">Enter your NIC number (e.g., 123456789V or 200012345678)</span>
+                            </span>
+                        </label>
+                        <input type="text" id="nic" name="nic" required maxlength="12" autocomplete="off">
+                        <div class="error-message" id="nicError">Please enter a valid NIC number</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthday">Date of Birth <span class="required">*</span></label>
+                        <input type="date" id="birthday" name="birthday" required autocomplete="bday">
+                        <div class="error-message" id="birthdayError">Please select your date of birth</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Gender <span class="required">*</span></label>
+                        <div class="gender-group">
+                            <div class="radio-option" data-value="male">
+                                <input type="radio" id="male" name="gender" value="male" required>
+                                <label for="male">Male</label>
+                            </div>
+                            <div class="radio-option" data-value="female">
+                                <input type="radio" id="female" name="gender" value="female" required>
+                                <label for="female">Female</label>
+                            </div>
+
+                        </div>
+                        <div class="error-message" id="genderError">Please select your gender</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required placeholder="+94 77 123 4567" autocomplete="tel">
+                        <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="address">Address <span class="required">*</span></label>
+                        <textarea id="address" name="address" required placeholder="Enter your complete address" autocomplete="street-address"></textarea>
+                        <div class="error-message" id="addressError">Please enter your address</div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="feedback">Your Feedback <span class="required">*</span></label>
+                        <textarea id="feedback" name="feedback" required placeholder="Please share your thoughts, suggestions, or experiences with us..."></textarea>
+                        <div class="error-message" id="feedbackError">Please provide your feedback</div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Submit Feedback
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        class FeedbackForm {
+            constructor() {
+                this.form = document.getElementById('feedbackForm');
+                this.submitBtn = document.getElementById('submitBtn');
+                this.successMessage = document.getElementById('successMessage');
+                this.apiEndpoint = 'http://192.168.25.101:5000/api/data';
+                
+                this.initializeEventListeners();
+                this.setMaxDate();
+                this.initializeRadioButtons();
+            }
+
+            initializeEventListeners() {
+                this.form.addEventListener('submit', (e) => this.handleSubmit(e));
+                
+                // Real-time validation
+                const inputs = this.form.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('blur', () => this.validateField(input));
+                    input.addEventListener('input', () => this.clearErrors(input));
+                });
+
+                // Handle window resize for mobile optimization
+                window.addEventListener('resize', this.debounce(() => {
+                    this.adjustForMobile();
+                }, 250));
+
+                // Initial mobile adjustment
+                this.adjustForMobile();
+            }
+
+            initializeRadioButtons() {
+                const radioOptions = document.querySelectorAll('.radio-option');
+                radioOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        const radioInput = option.querySelector('input[type="radio"]');
+                        if (radioInput) {
+                            radioInput.checked = true;
+                            this.updateRadioSelection();
+                            this.clearErrors(radioInput);
+                        }
+                    });
+                });
+
+                // Listen for radio button changes
+                const radioInputs = document.querySelectorAll('input[name="gender"]');
+                radioInputs.forEach(input => {
+                    input.addEventListener('change', () => {
+                        this.updateRadioSelection();
+                    });
+                });
+            }
+
+            updateRadioSelection() {
+                const radioOptions = document.querySelectorAll('.radio-option');
+                const selectedRadio = document.querySelector('input[name="gender"]:checked');
+                
+                radioOptions.forEach(option => {
+                    option.classList.remove('selected');
+                });
+
+                if (selectedRadio) {
+                    const selectedOption = selectedRadio.closest('.radio-option');
+                    if (selectedOption) {
+                        selectedOption.classList.add('selected');
+                    }
+                }
+            }
+
+            setMaxDate() {
+                const today = new Date();
+                const maxDate = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
+                document.getElementById('birthday').max = maxDate.toISOString().split('T')[0];
+            }
+
+            adjustForMobile() {
+                const isMobile = window.innerWidth <= 768;
+                const inputs = document.querySelectorAll('input, textarea, select');
+                
+                inputs.forEach(input => {
+                    if (isMobile) {
+                        input.style.fontSize = '16px'; // Prevent zoom on iOS
+                    } else {
+                        input.style.fontSize = '1rem';
+                    }
+                });
+            }
+
+            debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            validateField(field) {
+                const fieldName = field.name;
+                const value = field.value.trim();
+                let isValid = true;
+                let errorMessage = '';
+
+                switch (fieldName) {
+                    case 'name':
+                        isValid = value.length >= 2 && /^[a-zA-Z\s]+$/.test(value);
+                        errorMessage = 'Please enter a valid name (letters only, minimum 2 characters)';
+                        break;
+                    
+                    case 'email':
+                        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                        errorMessage = 'Please enter a valid email address';
+                        break;
+                    
+                    case 'nic':
+                        isValid = /^([0-9]{9}[vVxX]|[0-9]{12})$/.test(value);
+                        errorMessage = 'Please enter a valid NIC number (9 digits + V/X or 12 digits)';
+                        break;
+                    
+                    case 'birthday':
+                        if (value) {
+                            const birthDate = new Date(value);
+                            const today = new Date();
+                            const age = today.getFullYear() - birthDate.getFullYear();
+                            isValid = age >= 16 && age <= 100;
+                            errorMessage = 'You must be at least 16 years old';
+                        } else {
+                            isValid = false;
+                            errorMessage = 'Please select your date of birth';
+                        }
+                        break;
+                    
+                    case 'phone':
+                        isValid = /^[\+]?[0-9\s\-\(\)]{10,15}$/.test(value);
+                        errorMessage = 'Please enter a valid phone number';
+                        break;
+                    
+                    case 'address':
+                        isValid = value.length >= 10;
+                        errorMessage = 'Please enter a complete address (minimum 10 characters)';
+                        break;
+                    
+                    case 'feedback':
+                        isValid = value.length >= 10;
+                        errorMessage = 'Please provide detailed feedback (minimum 10 characters)';
+                        break;
+                }
+
+                if (fieldName === 'gender' || field.type === 'radio') {
+                    const genderSelected = document.querySelector('input[name="gender"]:checked');
+                    isValid = genderSelected !== null;
+                    errorMessage = 'Please select your gender';
+                    fieldName = 'gender';
+                }
+
+                this.showFieldValidation(fieldName === 'gender' || field.type === 'radio' ? 'gender' : fieldName, isValid, errorMessage);
+                return isValid;
+            }
+
+            showFieldValidation(fieldName, isValid, errorMessage) {
+                const errorElement = document.getElementById(`${fieldName}Error`);
+                const fieldElement = document.getElementById(fieldName) || document.querySelector(`input[name="${fieldName}"]`);
+                
+                if (errorElement) {
+                    if (isValid) {
+                        errorElement.style.display = 'none';
+                        if (fieldElement) {
+                            fieldElement.classList.remove('invalid');
+                            fieldElement.classList.add('valid');
+                        }
+                    } else {
+                        errorElement.textContent = errorMessage;
+                        errorElement.style.display = 'block';
+                        if (fieldElement) {
+                            fieldElement.classList.remove('valid');
+                            fieldElement.classList.add('invalid');
+                        }
+                    }
+                }
+            }
+
+            clearErrors(field) {
+                const errorElement = document.getElementById(`${field.name}Error`);
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+                field.classList.remove('invalid');
+            }
+
+            validateForm() {
+                let isValid = true;
+                const formData = new FormData(this.form);
+                
+                for (let [key, value] of formData.entries()) {
+                    const field = document.getElementById(key) || document.querySelector(`input[name="${key}"]`);
+                    if (field && !this.validateField(field)) {
+                        isValid = false;
+                    }
+                }
+
+                const genderSelected = document.querySelector('input[name="gender"]:checked');
+                if (!genderSelected) {
+                    this.showFieldValidation('gender', false, 'Please select your gender');
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+                
+                if (!this.validateForm()) {
+                    return;
+                }
+
+                this.setLoadingState(true);
+
+                try {
+                    const formData = new FormData(this.form);
+                    const data = {};
+                    
+                    for (let [key, value] of formData.entries()) {
+                        data[key] = value;
+                    }
+
+                    data.timestamp = new Date().toISOString();
+                    data.formType = 'feedback';
+
+                    // Log all form data to console for testing
+                    console.log('=== FORM DATA BEING SENT ===');
+                    console.log('API Endpoint:', this.apiEndpoint);
+                    console.log('Form Data Object:', data);
+                    console.log('JSON Payload:', JSON.stringify(data, null, 2));
+                    console.log('================================');
+
+                    const response = await fetch(this.apiEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        this.showSuccess();
+                        this.resetForm();
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    
+                    try {
+                        const formData = new FormData(this.form);
+                        formData.append('timestamp', new Date().toISOString());
+                        formData.append('formType', 'feedback');
+                        
+                        // Log fallback form data to console
+                        console.log('=== FALLBACK FORM DATA ===');
+                        console.log('FormData entries:');
+                        for (let [key, value] of formData.entries()) {
+                            console.log(`${key}: ${value}`);
+                        }
+                        console.log('==========================');
+                        
+                        const response = await fetch(this.apiEndpoint, {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        if (response.ok) {
+                            this.showSuccess();
+                            this.resetForm();
+                        } else {
+                            this.showError('Failed to submit feedback. Please try again later.');
+                        }
+                    } catch (fallbackError) {
+                        console.error('Fallback submission also failed:', fallbackError);
+                        this.showError('Failed to submit feedback. Please check your connection and try again.');
+                    }
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+
+            setLoadingState(loading) {
+                if (loading) {
+                    this.submitBtn.disabled = true;
+                    this.submitBtn.innerHTML = '<span class="loading"></span>Submitting...';
+                } else {
+                    this.submitBtn.disabled = false;
+                    this.submitBtn.innerHTML = 'Submit Feedback';
+                }
+            }
+
+            showSuccess() {
+                this.successMessage.style.display = 'block';
+                this.successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                setTimeout(() => {
+                    this.successMessage.style.display = 'none';
+                }, 5000);
+            }
+
+            showError(message) {
+                alert(`Error: ${message}`);
+            }
+
+            resetForm() {
+                this.form.reset();
+                
+                const fields = this.form.querySelectorAll('input, textarea');
+                fields.forEach(field => {
+                    field.classList.remove('valid', 'invalid');
+                });
+                
+                const errorMessages = this.form.querySelectorAll('.error-message');
+                errorMessages.forEach(error => {
+                    error.style.display = 'none';
+                });
+
+                // Reset radio button selections
+                const radioOptions = document.querySelectorAll('.radio-option');
+                radioOptions.forEach(option => {
+                    option.classList.remove('selected');
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new FeedbackForm();
+        });
+    </script>
+</body>
+</html>
